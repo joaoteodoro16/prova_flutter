@@ -20,6 +20,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final _noteEC = TextEditingController();
   final _focus = FocusNode();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -39,51 +40,49 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.gradientBlue,
-      ),
       body: Stack(
         children: [
           const ContainerBackgroundLinearGradiente(),
-          Padding(
-            padding: const EdgeInsets.only(left: 30, right: 30),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * .7,
-                    child: Card(child: Observer(
-                      builder: (context) {
-                        return ListView.builder(
-                          itemCount: widget.controller.notes.length,
-                          itemBuilder: (context, index) {
-                            final note = widget.controller.notes[index];
-                            return HomeListCard(
-                              note: note,
-                              index: index,
-                              noteController: _noteEC,
-                            );
-                          },
-                        );
-                      },
-                    )),
-                  ),
-                  HomeTextFormField(
-                    controller: _noteEC,
-                    focus: _focus,
-                    validator: Validatorless.multiple([
-                      Validatorless.min(
-                          5, 'O texto precisa de pelo menos 5 caracteres!'),
-                      Validatorless.required('Campo obrigatório!')
-                    ]),
-                    
-                  ),
-                  const Align(
-                    alignment: Alignment.bottomCenter,
-                    child: PrivacyPoliceButton(),
-                  )
-                ],
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * .6,
+                      child: Card(child: Observer(
+                        builder: (context) {
+                          return ListView.builder(
+                            itemCount: widget.controller.notes.length,
+                            itemBuilder: (context, index) {
+                              final note = widget.controller.notes[index];
+                              return HomeListCard(
+                                note: note,
+                                index: index,
+                                noteController: _noteEC,
+                              );
+                            },
+                          );
+                        },
+                      )),
+                    ),
+                    const SizedBox(height: 30,),
+                    HomeTextFormField(
+                      form: _formKey,
+                      controller: _noteEC,
+                      focus: _focus,
+                      validator: Validatorless.multiple(
+                        [
+                          Validatorless.min(5, 'O texto precisa de pelo menos 5 caracteres!'),
+                          Validatorless.required('Campo obrigatório!')
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10,),
+                    const PrivacyPoliceButton(),
+                  ],
+                ),
               ),
             ),
           ),
