@@ -2,6 +2,6 @@
 
 Prova prática processo seletivo para vaga de Desenvolvedor Flutter
 
-## Getting Started
+## Configuração para rodar o APP
 
 Versão Flutter do projeto: 3.10.2
